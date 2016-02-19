@@ -10,7 +10,6 @@ env:
   - SAUCE_USERNAME=angular-ci
   - SAUCE_ACCESS_KEY=9b988f434ff8-fbca-8aa4-4ae3-35442987
 before_script:
-  - ./scripts/start_sauce_connect.sh &
-  - npm run server &
+  - ./scripts/ci/build-and-test.sh
 script:
   - npm run test

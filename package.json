@@ -5,9 +5,7 @@
   "main": "prot.conf.js",
   "dependencies": {
     "node-resemble-js": "^0.0.5",
-    "protractor": "^3.1.1",
-    "sauce-connect-launcher": "^0.14.0",
-    "stream-to-buffer": "^0.1.0"
+    "protractor": "^3.1.1"
   },
   "devDependencies": {},
   "scripts": {
