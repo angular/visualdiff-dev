@@ -1,7 +1,7 @@
 exports.config = {
   specs: [ './e2e/**/*.spec.js' ],
   baseUrl: 'http://localhost:3333',
-  sauceUser: process.env.SAUCE_USER,
+  sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
   capabilities: {
     'browserName': 'chrome',
