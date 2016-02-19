@@ -7,6 +7,7 @@ branches:
     - master
 env:
   global:
+  - LOGS_DIR=/tmp/angular-material-build/logs
   - SAUCE_USERNAME=angular-ci
   - SAUCE_ACCESS_KEY=9b988f434ff8-fbca-8aa4-4ae3-35442987
   - CXX=g++-4.8
