@@ -1,0 +1,25 @@
+{
+  "name": "visualdiff-dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "prot.conf.js",
+  "dependencies": {
+    "node-resemble-js": "^0.0.5",
+    "sauce-connect-launcher": "^0.14.0",
+    "stream-to-buffer": "^0.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "server": "httpster -d ./app",
+    "sauce-connect": "node ./scripts/start_sauce_connect.js",
+    "test": "protractor ./prot.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angular/visualdiff-dev.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/angular/visualdiff-dev/issues"
+  }
+}
