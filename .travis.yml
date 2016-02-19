@@ -9,6 +9,7 @@ env:
   global:
   - SAUCE_USERNAME=angular-ci
   - SAUCE_ACCESS_KEY=9b988f434ff8-fbca-8aa4-4ae3-35442987
+  - CXX=g++-4.8
 before_script:
   # Necessary to run test on Travis CI that require a graphical interface.
   # See https://docs.travis-ci.com/user/gui-and-headless-browsers
