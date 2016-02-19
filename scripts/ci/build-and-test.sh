@@ -6,11 +6,10 @@ echo "=======  Starting build-and-test.sh  =====================================
 cd $(dirname $0)/../..
 
 # Include sources.
-source scripts/ci/sources/tunnel.sh
+source scripts/ci/tunnel.sh
 
 # Start http server
 npm run server &
-sleep 10
 
 # Setup environment.
 start_tunnel
