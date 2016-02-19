@@ -10,6 +10,7 @@ source scripts/ci/sources/tunnel.sh
 
 # Start http server
 npm run server &
+sleep 10
 
 # Setup environment.
 start_tunnel
