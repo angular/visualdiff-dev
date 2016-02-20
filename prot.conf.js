@@ -6,7 +6,7 @@ exports.config = {
   sauceUser: process.env.SAUCE_USERNAME,
   sauceKey: process.env.SAUCE_ACCESS_KEY,
   capabilities: {
-    'browserName': 'chrome',
+    'browserName': 'firefox',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': 12345,
     'name': 'Material 2 Protractor Tests'
