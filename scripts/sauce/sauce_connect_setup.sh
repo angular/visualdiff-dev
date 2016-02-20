@@ -34,7 +34,8 @@ ARGS=""
 
 # Set tunnel-id only on Travis, to make local testing easier.
 if [ ! -z "$TRAVIS_JOB_NUMBER" ]; then
-  ARGS="$ARGS --tunnel-identifier $TRAVIS_JOB_NUMBER"
+  echo "TRAVIS JOB NUMBER: $TRAVIS_JOB_NUMBER"
+  ARGS="$ARGS -i $TRAVIS_JOB_NUMBER"
 fi
 if [ ! -z "$BROWSER_PROVIDER_READY_FILE" ]; then
   ARGS="$ARGS --readyfile $BROWSER_PROVIDER_READY_FILE"
