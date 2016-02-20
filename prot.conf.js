@@ -7,7 +7,8 @@ exports.config = {
   sauceKey: key,
   capabilities: {
     'browserName': 'firefox',
-    'tunnel-identifier': 12345,
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    'build': process.env.TRAVIS_JOB_NUMBER,
     'name': 'Material 2 Protractor Tests'
   }
 };
