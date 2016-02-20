@@ -32,18 +32,9 @@ SAUCE_ACCESS_KEY=`echo $SAUCE_ACCESS_KEY | rev`
 
 ARGS=""
 
-# Set tunnel-id only on Travis, to make local testing easier.
-if [ ! -z "$TRAVIS_JOB_NUMBER" ]; then
-  echo "TRAVIS JOB NUMBER: $TRAVIS_JOB_NUMBER"
-  ARGS="$ARGS -i $TRAVIS_JOB_NUMBER"
-fi
-if [ ! -z "$BROWSER_PROVIDER_READY_FILE" ]; then
-  ARGS="$ARGS --readyfile $BROWSER_PROVIDER_READY_FILE"
-fi
-
 echo "Starting Sauce Connect in the background, logging into:"
 echo "  $CONNECT_LOG"
 echo "  $CONNECT_STDOUT"
 echo "  $CONNECT_STDERR"
-sauce-connect/bin/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY $ARGS \
+sauce-connect/bin/sc -u $SAUCE_USERNAME -k $SAUCE_ACCESS_KEY -i $TRAVIS_JOB_NUMBER \
   --logfile $CONNECT_LOG 2> $CONNECT_STDERR 1> $CONNECT_STDOUT &
