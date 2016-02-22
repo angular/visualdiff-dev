@@ -6,6 +6,7 @@ start_tunnel() {
 
 wait_for_tunnel() {
   ./scripts/sauce/sauce_connect_block.sh
+  sleep 20
 }
 
 teardown_tunnel() {
