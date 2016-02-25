@@ -21,24 +21,28 @@ function screenshot(id) {
   }
 
   function compareToMaster(screenshot) {
+    console.log('compareToMaster');
     fs.readFile(screenshotPath, function (err, gold) {
-      if (err) writeImage(screenshot, screenshotPath);
-      else compareImages(screenshot, gold);
+      if (err) {
+        console.error(err);
+        writeImage(screenshot, screenshotPath);
+      } else {
+        compareImages(screenshot, gold);
+      }
     });
   }
 
   function writeImage(image, path) {
-    var stream = fs.createWriteStream(path);
-    stream.write(image);
-    stream.end();
+    console.log('writeImage');
+    fs.writeFile(path, image);
   }
 
   function compareImages(screenshot, gold) {
-    console.log('compareImages', screenshot, gold);
+    console.log('compareImages');
     resemble(screenshot).compareTo(gold).onComplete(function (data) {
-      console.log(data);
-      writeImage(screenshot, screenshotPath);
-      if (data.misMatchPercentage > 0) throw new Error('Screenshot "' + id + '" does not match.');
+      if (data.misMatchPercentage > 0) {
+        throw new Error('Screenshot "' + id + '" does not match.');
+      }
     });
   }
 }
