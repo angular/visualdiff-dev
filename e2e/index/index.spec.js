@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var child_process  = require('child_process');
-var resemble = require('node-resemble-js');
 
 describe('hello, protractor', function () {
   describe('index', function () {
@@ -30,6 +29,7 @@ function screenshot(id) {
         compareImages();
       } else {
         overwriteExistingScreenshot();
+        throw new Error('screenshot "' + id + '" does not exist.');
       }
     });
   }
@@ -41,13 +41,10 @@ function screenshot(id) {
   function compareImages() {
     var gold = fs.readFileSync(screenshotPath);
     var temp = fs.readFileSync(tempPath);
-    resemble(temp)
-        .compareTo(gold)
-        .onComplete(function (data) {
-          overwriteExistingScreenshot();
-          if (data.misMatchPercentage > 0) {
-            throw new Error('screenshot "' + id + '" does not match.');
-          }
-        });
+    var changed = gold.toString() !== temp.toString();
+    overwriteExistingScreenshot();
+    if (changed) {
+      throw new Error('screenshot "' + id + '" does not match.');
+    }
   }
 }

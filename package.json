@@ -5,7 +5,6 @@
   "main": "prot.conf.js",
   "dependencies": {
     "httpster": "^1.0.3",
-    "node-resemble-js": "0.0.5",
     "protractor": "^3.0.0"
   },
   "devDependencies": {},
@@ -17,6 +16,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/angular/visualdiff-dev.git"
+  },
+  "engines": {
+    "node": ">=5.6.0"
   },
   "author": "",
   "bugs": {
