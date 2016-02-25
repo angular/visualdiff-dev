@@ -1,6 +1,7 @@
 var fs = require('fs');
-var resemble = require('node-resemble-js');
 var path = require('path');
+var child_process  = require('child_process');
+var resemble = require('node-resemble-js');
 
 describe('hello, protractor', function () {
   describe('index', function () {
@@ -14,31 +15,39 @@ describe('hello, protractor', function () {
 
 function screenshot(id) {
   var screenshotPath = path.resolve(__dirname, '../../screenshots', id + '.screenshot.png');
-  browser.takeScreenshot().then(handleScreenshot);
+  var tempPath = path.resolve(__dirname, '../../screenshots', id + '.temp.png');
 
-  function handleScreenshot(png) {
-    compareToMaster(new Buffer(png, 'base64'));
+  browser.takeScreenshot().then(handleNewScreenshot);
+
+  function handleNewScreenshot(png) {
+    var newScreenshot = new Buffer(png, 'base64');
+    fs.writeFile(tempPath, newScreenshot, checkForExistingScreenshot);
   }
 
-  function compareToMaster(screenshot) {
-    fs.readFile(screenshotPath, function (err, gold) {
-      if (err) {
-        writeImage(screenshot, screenshotPath);
+  function checkForExistingScreenshot() {
+    fs.access(screenshotPath, fs.F_OK, function (err) {
+      if (!err) {
+        compareImages();
       } else {
-        compareImages(screenshot, gold);
+        overwriteExistingScreenshot();
       }
     });
   }
 
-  function writeImage(image, path) {
-    fs.writeFile(path, image);
+  function overwriteExistingScreenshot() {
+    child_process.execSync('mv "' + tempPath + '" "' + screenshotPath + '"');
   }
 
-  function compareImages(screenshot, gold) {
-    resemble(screenshot).compareTo(gold).onComplete(function (data) {
-      if (data.misMatchPercentage > 0) {
-        throw new Error('Screenshot "' + id + '" does not match.');
-      }
-    });
+  function compareImages() {
+    var gold = fs.readFileSync(screenshotPath);
+    var temp = fs.readFileSync(tempPath);
+    resemble(temp)
+        .compareTo(gold)
+        .onComplete(function (data) {
+          overwriteExistingScreenshot();
+          if (data.misMatchPercentage > 0) {
+            throw new Error('screenshot "' + id + '" does not match.');
+          }
+        });
   }
 }
