@@ -11,9 +11,9 @@ branches:
 env:
   global:
   - LOGS_DIR=/tmp/visualdiff-dev/logs
+  - SAUCE_READYFILE=/tmp/visualdiff-dev/sauce-connect-ready-$RANDOM
   - SAUCE_USERNAME=angular-ci
   - SAUCE_ACCESS_KEY=9b988f434ff8-fbca-8aa4-4ae3-35442987
-  - SAUCE_READYFILE=sauce-connect-ready-$RANDOM
 
 before_script:
   - "export DISPLAY=:99.0"
