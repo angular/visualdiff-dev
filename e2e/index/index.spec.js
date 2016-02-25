@@ -15,8 +15,8 @@ describe('hello, protractor', function () {
 });
 
 function screenshot(id) {
-  var screenshotPath = path.resolve('./screenshots', id + '.screenshot.png');
-  var tempPath = path.resolve('./screenshots', id + '.temp.png');
+  var screenshotPath = './screenshots/' + id + '.screenshot.png';
+  var tempPath = './screenshots/' + id + '.temp.png';
 
   browser.takeScreenshot().then(handleNewScreenshot);
 
