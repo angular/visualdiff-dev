@@ -17,14 +17,11 @@ function screenshot(id) {
   browser.takeScreenshot().then(handleScreenshot);
 
   function handleScreenshot(png) {
-    console.log('handleScreenshot');
     compareToMaster(new Buffer(png, 'base64'));
   }
 
   function compareToMaster(screenshot) {
-    console.log('compareToMaster', screenshot);
     fs.readFile(screenshotPath, function (err, gold) {
-      console.log('comparing');
       if (err) writeImage(screenshot, screenshotPath);
       else compareImages(screenshot, gold);
     });
