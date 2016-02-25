@@ -1,6 +1,7 @@
 var fs = require('fs');
 var path = require('path');
 var child_process  = require('child_process');
+var resemble = require('node-resemble-js');
 
 describe('hello, protractor', function () {
   describe('index', function () {
@@ -41,10 +42,14 @@ function screenshot(id) {
   function compareImages() {
     var gold = fs.readFileSync(screenshotPath);
     var temp = fs.readFileSync(tempPath);
-    var changed = gold.toString() !== temp.toString();
     overwriteExistingScreenshot();
-    if (changed) {
-      throw new Error('screenshot "' + id + '" does not match.');
-    }
+    resemble(gold)
+        .compareTo(temp)
+        .onComplete(function (data) {
+          var changed = Number(data.misMatchPercentage) > 0;
+          if (changed) {
+            throw new Error('screenshot "' + id + '" does not match.');
+          }
+        });
   }
 }
