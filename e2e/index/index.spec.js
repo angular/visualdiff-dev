@@ -28,7 +28,6 @@ function screenshot(id) {
   }
 
   function writeImage(image, path) {
-    console.log('writeImage', image, path);
     var stream = fs.createWriteStream(path);
     stream.write(image);
     stream.end();
