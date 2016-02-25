@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var child_process  = require('child_process');
 var mapnik = require('mapnik');
+var resemble = require('node-resemble-js');
 
 describe('hello, protractor', function () {
   describe('index', function () {
@@ -40,12 +41,23 @@ function screenshot(id) {
   }
 
   function compareImages() {
-    var gold = mapnik.Image.open(screenshotPath);
-    var temp = mapnik.Image.open(tempPath);
-    var changed = gold.compare(temp);
-    overwriteExistingScreenshot();
-    if (gold.compare(temp)) {
-      throw new Error('screenshot "' + id + '" has changed.');
-    }
+    //var gold = mapnik.Image.open(screenshotPath);
+    //var temp = mapnik.Image.open(tempPath);
+    //var changed = gold.compare(temp);
+    //overwriteExistingScreenshot();
+    //if (gold.compare(temp)) {
+    //  throw new Error('screenshot "' + id + '" has changed.');
+    //}
+    var gold = fs.readFileSync(screenshotPath);
+    var temp = fs.readFileSync(tempPath);
+    resemble(gold)
+        .compareTo(temp)
+        .onComplete(function (data) {
+          var changed = Number(data.misMathPercentage) > 0;
+          overwriteExistingScreenshot();
+          if (changed) {
+            throw new Error('screenshot "' + id + '" has changed.');
+          }
+        });
   }
 }
