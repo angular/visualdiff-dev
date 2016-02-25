@@ -5,7 +5,7 @@
   "main": "prot.conf.js",
   "dependencies": {
     "httpster": "^1.0.3",
-    "node-resemble-js": "0.0.5",
+    "mapnik": "^3.4.16",
     "protractor": "^3.0.0"
   },
   "devDependencies": {},
