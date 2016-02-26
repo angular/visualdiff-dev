@@ -20,7 +20,7 @@
     "url": "git+https://github.com/angular/visualdiff-dev.git"
   },
   "engines": {
-    "node": ">=5.6.0"
+    "node": ">= 5.4.1 < 6"
   },
   "author": "",
   "bugs": {
