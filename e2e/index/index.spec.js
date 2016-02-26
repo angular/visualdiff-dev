@@ -6,16 +6,6 @@ var mapnik = require('mapnik');
 
 var SHA = process.env.TRAVIS_COMMIT;
 
-describe('hello, protractor', function () {
-  describe('index', function () {
-    it('should have a title', function () {
-      browser.get('/#');
-      expect(browser.getTitle()).toBe('Protractor Test');
-      screenshot('simple header');
-    });
-  });
-});
-
 function screenshot(id) {
   var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
   var screenshotUrl = `https://media.githubusercontent.com/media/angular/visualdiff-dev/${ SHA }/screenshots/${ encodeURIComponent(id) }.screenshot.png`;
@@ -61,3 +51,14 @@ function screenshot(id) {
 function status(msg) {
   console.info('STATUS', msg);
 }
+
+describe('hello, protractor', function () {
+  describe('index', function () {
+    it('should have a title', function () {
+      browser.get('/#');
+      expect(browser.getTitle()).toBe('Protractor Test');
+      screenshot('simple header');
+      screenshot('another screenshot');
+    });
+  });
+});
