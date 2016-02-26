@@ -24,6 +24,7 @@ before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
   - mkdir -p $LOGS_DIR
+  - git lfs fetch --all
   - git lfs pull
 script:
   - ./scripts/ci/build-and-test.sh
