@@ -15,20 +15,23 @@ describe('hello, protractor', function () {
 });
 
 function screenshot(id) {
-  var screenshotPath = './screenshots/' + id + '.screenshot.png';
-  var tempPath = './screenshots/' + id + '.temp.png';
+  var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
+  var goldScreenshot, newScreenshot;
 
   browser.takeScreenshot().then(handleNewScreenshot);
 
   function handleNewScreenshot(png) {
-    var newScreenshot = new Buffer(png, 'base64');
-    fs.writeFile(tempPath, newScreenshot, checkForExistingScreenshot);
+    newScreenshot = new Buffer(png, 'base64');
+    checkForExistingScreenshot();
   }
 
   function checkForExistingScreenshot() {
     fs.access(screenshotPath, fs.F_OK, function (err) {
       if (!err) {
-        compareImages();
+        fs.readFile(screenshotPath, 'base64', function (err, data) {
+          goldScreenshot = new Buffer(data, 'base64');
+          compareImages();
+        });
       } else {
         overwriteExistingScreenshot();
         throw new Error('screenshot "' + id + '" does not exist.');
@@ -37,15 +40,15 @@ function screenshot(id) {
   }
 
   function overwriteExistingScreenshot() {
-    child_process.execSync('mv "' + tempPath + '" "' + screenshotPath + '"');
+    mapnik.Image.fromBytes(newScreenshot).save(screenshotPath);
   }
 
   function compareImages() {
-    var gold = mapnik.Image.open(screenshotPath);
-    var temp = mapnik.Image.open(tempPath);
+    var gold = mapnik.Image.fromBytes(goldScreenshot);
+    var temp = mapnik.Image.fromBytes(newScreenshot);
     var changed = gold.compare(temp);
     overwriteExistingScreenshot();
-    if (gold.compare(temp)) {
+    if (changed) {
       throw new Error('screenshot "' + id + '" has changed.');
     }
   }
