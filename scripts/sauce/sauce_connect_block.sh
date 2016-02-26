@@ -6,4 +6,4 @@ while [ ! -f $SAUCE_READYFILE ]; do
   printf "."
   sleep .5
 done
-printf "\nConnected"
+printf "\nConnected\n\n"
