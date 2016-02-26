@@ -33,18 +33,8 @@ function screenshot(id) {
   }
 
   function getExistingScreenshot() {
-    child_process.execSync('rm -f "' + screenshotPath + '"');
-    goldScreenshot = fs.createWriteStream(screenshotPath);
-    https.get(screenshotUrl, function(res) {
-      console.log({ status: res.statusCode });
-      res.on('data', function (chunk) {
-        goldScreenshot.write(chunk);
-      });
-      res.on('end', function () {
-        goldScreenshot.end();
-        compareImages();
-      });
-    });
+    child_process.execSync('curl "' + screenshotUrl + '" > "' + screenshotPath + '"');
+    compareImages();
   }
 
   function overwriteExistingScreenshot() {
