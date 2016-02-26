@@ -17,8 +17,10 @@ describe('hello, protractor', function () {
 });
 
 function screenshot(id) {
-  var screenshotPath = path.resolve('/tmp', id + '.screenshot.png');
+  var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
   var screenshotUrl = 'https://raw.githubusercontent.com/angular/visualdiff-dev/' + SHA + '/screenshots/' + id + '.screenshot.png';
+  //-- temporary: for now, just look at master
+  screenshotUrl = 'https://raw.githubusercontent.com/angular/visualdiff-dev/master/screenshots/' + id + '.screenshot.png';
   var goldScreenshot, newScreenshot;
 
   browser.takeScreenshot().then(handleNewScreenshot);
@@ -29,14 +31,31 @@ function screenshot(id) {
   }
 
   function getExistingScreenshot() {
+    child_process.execSync('rm "' + screenshotPath + '"');
     goldScreenshot = fs.createWriteStream(screenshotPath);
     https.get(screenshotUrl, function(res) {
+      console.log(res.statusCode);
       res.on('data', function (chunk) {
         goldScreenshot.write(chunk);
       });
       res.on('finish', function () {
+        goldScreenshot.end();
         compareImages();
       });
+    });
+  }
+
+  function checkForExistingScreenshot() {
+    fs.access(screenshotPath, fs.F_OK, function (err) {
+      if (!err) {
+        fs.readFile(screenshotPath, function (err, data) {
+          goldScreenshot = new Buffer(data, 'base64');
+          compareImages();
+        });
+      } else {
+        overwriteExistingScreenshot();
+        throw new Error('screenshot "' + id + '" does not exist.');
+      }
     });
   }
 
