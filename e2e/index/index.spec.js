@@ -32,7 +32,7 @@ function screenshot(id) {
     fs.access(screenshotPath, fs.F_OK, function (err) {
       log({ err: err });
       if (!err) {
-        fs.readFile(screenshotPath, 'base64', function (err, data) {
+        fs.readFile(screenshotPath, function (err, data) {
           goldScreenshot = new Buffer(data, 'base64');
           log({ data: data, goldScreenshot: goldScreenshot });
           compareImages();
