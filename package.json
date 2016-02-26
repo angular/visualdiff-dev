@@ -6,7 +6,6 @@
   "dependencies": {
     "httpster": "^1.0.3",
     "mapnik": "^3.4.16",
-    "node-resemble-js": "0.0.5",
     "protractor": "^3.0.0"
   },
   "devDependencies": {},
@@ -18,9 +17,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/angular/visualdiff-dev.git"
-  },
-  "engines": {
-    "node": ">= 5.4.1 < 6"
   },
   "author": "",
   "bugs": {
