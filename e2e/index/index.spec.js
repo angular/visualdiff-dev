@@ -18,38 +18,46 @@ describe('hello, protractor', function () {
 
 function screenshot(id) {
   var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
-  var screenshotUrl = 'https://media.githubusercontent.com/media/angular/visualdiff-dev/' + SHA + '/screenshots/' + encodeURIComponent(id) + '.screenshot.png';
-
+  var screenshotUrl = `https://media.githubusercontent.com/media/angular/visualdiff-dev/${ SHA }/screenshots/${ encodeURIComponent(id) }.screenshot.png`;
   var newScreenshot;
 
   browser.takeScreenshot().then(handleNewScreenshot);
 
   function handleNewScreenshot(png) {
-    newScreenshot = new Buffer(png, 'base64');
+    status(`Generated new screenshot for "${ id }"`);
+    newScreenshot = mapnik.Image.fromBytes(new Buffer(png, 'base64'));
     if (SHA) downloadGoldFromGithub();
     else compareImages();
   }
 
   function downloadGoldFromGithub() {
-    console.log('downloading gold screenshot from Github');
-    console.log(screenshotUrl);
-    console.log(screenshotPath);
-    child_process.execSync('curl ' + screenshotUrl + ' > ' + screenshotPath.replace(/ /g, '\ '));
+    status('Downloading gold screenshot from Github');
+    child_process.execSync(`curl ${screenshotUrl} > "${screenshotPath}"`);
     compareImages();
   }
 
   function overwriteExistingScreenshot() {
-    mapnik.Image.fromBytes(newScreenshot).save(screenshotPath);
+    newScreenshot.save(screenshotPath);
   }
 
   function compareImages() {
-    var gold = mapnik.Image.open(screenshotPath);
-    var temp = mapnik.Image.fromBytes(newScreenshot);
-    var changed = gold.compare(temp);
-    console.log(gold, temp, changed);
-    overwriteExistingScreenshot();
-    if (changed) {
-      throw new Error('screenshot "' + id + '" has changed.');
+    status('Comparing new screenshot to gold');
+    try {
+      var goldScreenshot = mapnik.Image.open(screenshotPath);
+      var changed = goldScreenshot.compare(newScreenshot);
+      overwriteExistingScreenshot();
+      if (changed) {
+        throw new Error('screenshot "' + id + '" has changed.');
+      } else {
+        status('Screenshot matches gold');
+      }
+    } catch (e) {
+      status('Gold screenshot not found - setting new screenshot as the new gold');
+      overwriteExistingScreenshot();
     }
   }
+}
+
+function status(msg) {
+  console.info('STATUS', msg);
 }
