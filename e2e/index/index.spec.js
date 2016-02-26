@@ -18,7 +18,7 @@ describe('hello, protractor', function () {
 
 function screenshot(id) {
   var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
-  var screenshotUrl = 'https://rawgit.com/angular/visualdiff-dev/' + SHA + '/screenshots/' + encodeURIComponent(id) + '.screenshot.png';
+  var screenshotUrl = 'https://raw.githubusercontent.com/angular/visualdiff-dev/' + SHA + '/screenshots/' + id + '.screenshot.png';
 
   var newScreenshot;
 
