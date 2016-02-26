@@ -18,18 +18,23 @@ function screenshot(id) {
   var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
   var goldScreenshot, newScreenshot;
 
+  log({ screenshotPath: screenshotPath, id: id });
+
   browser.takeScreenshot().then(handleNewScreenshot);
 
   function handleNewScreenshot(png) {
     newScreenshot = new Buffer(png, 'base64');
+    log({ png: png, newScreenshot: newScreenshot });
     checkForExistingScreenshot();
   }
 
   function checkForExistingScreenshot() {
     fs.access(screenshotPath, fs.F_OK, function (err) {
+      log({ err: err });
       if (!err) {
         fs.readFile(screenshotPath, 'base64', function (err, data) {
           goldScreenshot = new Buffer(data, 'base64');
+          log({ data: data, goldScreenshot: goldScreenshot });
           compareImages();
         });
       } else {
@@ -47,9 +52,14 @@ function screenshot(id) {
     var gold = mapnik.Image.fromBytes(goldScreenshot);
     var temp = mapnik.Image.fromBytes(newScreenshot);
     var changed = gold.compare(temp);
+    log({ gold: gold, temp: temp, changed: changed });
     overwriteExistingScreenshot();
     if (changed) {
       throw new Error('screenshot "' + id + '" has changed.');
     }
   }
+}
+
+function log(msg) {
+  console.log('---', msg);
 }
