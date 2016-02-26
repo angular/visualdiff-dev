@@ -43,6 +43,7 @@ function screenshot(id) {
     var gold = mapnik.Image.open(screenshotPath);
     var temp = mapnik.Image.fromBytes(newScreenshot);
     var changed = gold.compare(temp);
+    console.log(gold, temp, changed);
     overwriteExistingScreenshot();
     if (changed) {
       throw new Error('screenshot "' + id + '" has changed.');
