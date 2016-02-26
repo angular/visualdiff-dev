@@ -19,17 +19,15 @@ describe('hello, protractor', function () {
 function screenshot(id) {
   var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
   var screenshotUrl = 'https://raw.githubusercontent.com/angular/visualdiff-dev/' + SHA + '/screenshots/' + id + '.screenshot.png';
-  //-- temporary: for now, just look at master
-  screenshotUrl = 'https://media.githubusercontent.com/media/angular/visualdiff-dev/master/screenshots/' + encodeURIComponent(id) + '.screenshot.png'
 
-  console.log(JSON.stringify(screenshotUrl));
-  var goldScreenshot, newScreenshot;
+  var newScreenshot;
 
   browser.takeScreenshot().then(handleNewScreenshot);
 
   function handleNewScreenshot(png) {
     newScreenshot = new Buffer(png, 'base64');
-    getExistingScreenshot();
+    if (SHA) getExistingScreenshot();
+    else compareImages();
   }
 
   function getExistingScreenshot() {
