@@ -26,11 +26,12 @@ function screenshot(id) {
 
   function handleNewScreenshot(png) {
     newScreenshot = new Buffer(png, 'base64');
-    if (SHA) getExistingScreenshot();
+    if (SHA) downloadGoldFromGithub();
     else compareImages();
   }
 
-  function getExistingScreenshot() {
+  function downloadGoldFromGithub() {
+    console.log('downloading gold screenshot from Github');
     child_process.execSync('curl "' + screenshotUrl + '" > "' + screenshotPath + '"');
     compareImages();
   }
