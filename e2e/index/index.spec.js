@@ -42,8 +42,9 @@ function screenshot(id) {
         status('Screenshot matches gold');
       }
     } catch (e) {
-      status('Gold screenshot not found - setting new screenshot as the new gold');
+      status('Gold screenshot not found');
       overwriteExistingScreenshot();
+      throw new Error('screenshot "' + id + '" was not found.');
     }
   }
 }
