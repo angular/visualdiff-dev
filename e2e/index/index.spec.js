@@ -20,7 +20,9 @@ function screenshot(id) {
   var screenshotPath = path.resolve(__dirname, '..', '..', 'screenshots', id + '.screenshot.png');
   var screenshotUrl = 'https://raw.githubusercontent.com/angular/visualdiff-dev/' + SHA + '/screenshots/' + id + '.screenshot.png';
   //-- temporary: for now, just look at master
-  screenshotUrl = 'https://raw.githubusercontent.com/angular/visualdiff-dev/master/screenshots/' + id + '.screenshot.png';
+  screenshotUrl = 'https://media.githubusercontent.com/media/angular/visualdiff-dev/master/screenshots/' + encodeURIComponent(id) + '.screenshot.png'
+
+  console.log(JSON.stringify(screenshotUrl));
   var goldScreenshot, newScreenshot;
 
   browser.takeScreenshot().then(handleNewScreenshot);
@@ -31,31 +33,17 @@ function screenshot(id) {
   }
 
   function getExistingScreenshot() {
-    child_process.execSync('rm "' + screenshotPath + '"');
+    child_process.execSync('rm -f "' + screenshotPath + '"');
     goldScreenshot = fs.createWriteStream(screenshotPath);
     https.get(screenshotUrl, function(res) {
-      console.log(res.statusCode);
+      console.log({ status: res.statusCode });
       res.on('data', function (chunk) {
         goldScreenshot.write(chunk);
       });
-      res.on('finish', function () {
+      res.on('end', function () {
         goldScreenshot.end();
         compareImages();
       });
-    });
-  }
-
-  function checkForExistingScreenshot() {
-    fs.access(screenshotPath, fs.F_OK, function (err) {
-      if (!err) {
-        fs.readFile(screenshotPath, function (err, data) {
-          goldScreenshot = new Buffer(data, 'base64');
-          compareImages();
-        });
-      } else {
-        overwriteExistingScreenshot();
-        throw new Error('screenshot "' + id + '" does not exist.');
-      }
     });
   }
 
@@ -64,7 +52,7 @@ function screenshot(id) {
   }
 
   function compareImages() {
-    var gold = mapnik.Image.fromBytes(goldScreenshot);
+    var gold = mapnik.Image.open(screenshotPath);
     var temp = mapnik.Image.fromBytes(newScreenshot);
     var changed = gold.compare(temp);
     overwriteExistingScreenshot();
