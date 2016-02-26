@@ -2,7 +2,6 @@ var fs = require('fs');
 var path = require('path');
 var child_process  = require('child_process');
 var mapnik = require('mapnik');
-var resemble = require('node-resemble-js');
 
 describe('hello, protractor', function () {
   describe('index', function () {
