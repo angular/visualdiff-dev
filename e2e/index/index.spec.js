@@ -32,6 +32,7 @@ function screenshot(id) {
 
   function downloadGoldFromGithub() {
     console.log('downloading gold screenshot from Github');
+    console.log(screenshotUrl, screenshotPath);
     child_process.execSync('curl "' + screenshotUrl + '" > "' + screenshotPath + '"');
     compareImages();
   }
