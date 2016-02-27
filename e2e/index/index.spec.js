@@ -34,9 +34,8 @@ function screenshot(id) {
     status('Comparing new screenshot to gold');
     try {
       var goldScreenshot = mapnik.Image.open(screenshotPath);
-      var changed = goldScreenshot.compare(newScreenshot);
       overwriteExistingScreenshot();
-      if (changed) {
+      if (goldScreenshot.compare(newScreenshot)) {
         throw new Error('screenshot "' + id + '" has changed.');
       } else {
         status('Screenshot matches gold');
