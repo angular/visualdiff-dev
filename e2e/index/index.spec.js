@@ -43,7 +43,6 @@ function screenshot(id) {
       }
     } catch (e) {
       status('Gold screenshot not found');
-
       overwriteExistingScreenshot();
       throw new Error('screenshot "' + id + '" was not found.');
     }
